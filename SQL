@@ -1,0 +1,29 @@
+USE EasyGamesAssessment;
+GO
+
+
+CREATE TABLE TransactionType (
+    TransactionTypeId INT IDENTITY PRIMARY KEY,
+    Name NVARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE Client (
+    ClientId INT IDENTITY PRIMARY KEY,
+    FirstName NVARCHAR(100) NOT NULL,
+    LastName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(255) NULL,
+    Balance DECIMAL(18,2) NOT NULL DEFAULT 0.00
+);
+
+
+CREATE TABLE [Transaction] (
+    TransactionId INT IDENTITY PRIMARY KEY,
+    ClientId INT NOT NULL,
+    TransactionTypeId INT NOT NULL,
+    Amount DECIMAL(18,2) NOT NULL,
+    Comment NVARCHAR(500) NULL,
+    CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT FK_Transaction_Client FOREIGN KEY (ClientId) REFERENCES Client(ClientId),
+    CONSTRAINT FK_Transaction_TransactionType FOREIGN KEY (TransactionTypeId) REFERENCES TransactionType(TransactionTypeId)
+);
